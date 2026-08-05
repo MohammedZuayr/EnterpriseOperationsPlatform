@@ -1,0 +1,40 @@
+<mxfile host="Electron">
+  <diagram name="Page-1" id="0-ATAAvbDFhSJ0GPRGT8">
+    <mxGraphModel dx="565" dy="494" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="1_iz90s6yZlCf-I3unXS-9" edge="1" parent="1" source="1_iz90s6yZlCf-I3unXS-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="1_iz90s6yZlCf-I3unXS-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="1_iz90s6yZlCf-I3unXS-1" parent="1" style="whiteSpace=wrap;html=1;" value="User" vertex="1">
+          <mxGeometry height="60" width="120" x="230" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="1_iz90s6yZlCf-I3unXS-8" edge="1" parent="1" source="1_iz90s6yZlCf-I3unXS-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="1_iz90s6yZlCf-I3unXS-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="1_iz90s6yZlCf-I3unXS-3" parent="1" style="whiteSpace=wrap;html=1;" value="React Frontend" vertex="1">
+          <mxGeometry height="60" width="120" x="230" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="1_iz90s6yZlCf-I3unXS-10" edge="1" parent="1" source="1_iz90s6yZlCf-I3unXS-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="1_iz90s6yZlCf-I3unXS-6" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="1_iz90s6yZlCf-I3unXS-4" parent="1" style="whiteSpace=wrap;html=1;" value="REST API (HTTPS)" vertex="1">
+          <mxGeometry height="50" width="120" x="230" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="1_iz90s6yZlCf-I3unXS-5" parent="1" style="whiteSpace=wrap;html=1;" value="ASP.NET Core Web API" vertex="1">
+          <mxGeometry height="60" width="140" x="220" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="1_iz90s6yZlCf-I3unXS-11" edge="1" parent="1" source="1_iz90s6yZlCf-I3unXS-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="1_iz90s6yZlCf-I3unXS-7" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="1_iz90s6yZlCf-I3unXS-6" parent="1" style="whiteSpace=wrap;html=1;" value="Buisness Logic Layer" vertex="1">
+          <mxGeometry height="60" width="120" x="230" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="1_iz90s6yZlCf-I3unXS-7" parent="1" style="whiteSpace=wrap;html=1;" value="PostgreSQL Database" vertex="1">
+          <mxGeometry height="60" width="130" x="225" y="480" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
