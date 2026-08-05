@@ -1,0 +1,58 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="AmC1l9yEwk9qq3uyUY2a">
+    <mxGraphModel dx="1414" dy="777" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="4jaOLti5vnraIqbDtH-Y-1" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Enterprise Operations Platform" vertex="1">
+          <mxGeometry height="30" width="170" x="330" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="4jaOLti5vnraIqbDtH-Y-10" edge="1" parent="1" source="4jaOLti5vnraIqbDtH-Y-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="4jaOLti5vnraIqbDtH-Y-3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4jaOLti5vnraIqbDtH-Y-2" parent="1" style="whiteSpace=wrap;html=1;" value="React Frontend (Client)" vertex="1">
+          <mxGeometry height="60" width="140" x="345" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="4jaOLti5vnraIqbDtH-Y-11" edge="1" parent="1" source="4jaOLti5vnraIqbDtH-Y-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="4jaOLti5vnraIqbDtH-Y-4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4jaOLti5vnraIqbDtH-Y-3" parent="1" style="whiteSpace=wrap;html=1;" value="HTTPS / REST API (JSON)" vertex="1">
+          <mxGeometry height="60" width="160" x="335" y="265" as="geometry" />
+        </mxCell>
+        <mxCell id="4jaOLti5vnraIqbDtH-Y-12" edge="1" parent="1" source="4jaOLti5vnraIqbDtH-Y-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="4jaOLti5vnraIqbDtH-Y-6" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4jaOLti5vnraIqbDtH-Y-13" edge="1" parent="1" source="4jaOLti5vnraIqbDtH-Y-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="4jaOLti5vnraIqbDtH-Y-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4jaOLti5vnraIqbDtH-Y-14" edge="1" parent="1" source="4jaOLti5vnraIqbDtH-Y-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="4jaOLti5vnraIqbDtH-Y-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4jaOLti5vnraIqbDtH-Y-4" parent="1" style="whiteSpace=wrap;html=1;" value="ASP.NET Core Web API" vertex="1">
+          <mxGeometry height="60" width="140" x="345" y="358" as="geometry" />
+        </mxCell>
+        <mxCell id="4jaOLti5vnraIqbDtH-Y-5" parent="1" style="whiteSpace=wrap;html=1;" value="Authentication" vertex="1">
+          <mxGeometry height="60" width="120" x="160" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="4jaOLti5vnraIqbDtH-Y-15" edge="1" parent="1" source="4jaOLti5vnraIqbDtH-Y-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="4jaOLti5vnraIqbDtH-Y-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4jaOLti5vnraIqbDtH-Y-6" parent="1" style="whiteSpace=wrap;html=1;" value="IT Asset Module" vertex="1">
+          <mxGeometry height="60" width="120" x="355" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="4jaOLti5vnraIqbDtH-Y-7" parent="1" style="whiteSpace=wrap;html=1;" value="Dashboard Service" vertex="1">
+          <mxGeometry height="60" width="120" x="560" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="4jaOLti5vnraIqbDtH-Y-16" edge="1" parent="1" source="4jaOLti5vnraIqbDtH-Y-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="4jaOLti5vnraIqbDtH-Y-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4jaOLti5vnraIqbDtH-Y-8" parent="1" style="whiteSpace=wrap;html=1;" value="Entity Framework Core" vertex="1">
+          <mxGeometry height="60" width="140" x="345" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="4jaOLti5vnraIqbDtH-Y-9" parent="1" style="whiteSpace=wrap;html=1;" value="PostgreSQL Database" vertex="1">
+          <mxGeometry height="60" width="130" x="350" y="640" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
