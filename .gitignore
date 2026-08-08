@@ -1,0 +1,12 @@
+# .NET build files
+backend/EnterpriseOperations.API/bin/
+backend/EnterpriseOperations.API/obj/
+
+# Node.js dependencies
+frontend/node_modules/
+
+# Vite build output
+frontend/dist/
+
+# Visual Studio
+.vs/
