@@ -1,22 +1,45 @@
 import { useEffect, useState } from "react";
 import type { Asset } from "./Asset";
+import type { Category } from "./Category";
+import type { Employee } from "./Employee";
+import type { Location } from "./Location";
 import "./App.css";
 
 function App() {
   const [page, setPage] = useState("Dashboard");
   const [assets, setAssets] = useState<Asset[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [editingCategoryId, setEditingCategoryId] = useState<number | null>(null);
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [newEmployeeName, setNewEmployeeName] = useState("");
+  const [newEmployeeDepartment, setNewEmployeeDepartment] = useState("");
+  const [editingEmployeeId, setEditingEmployeeId] = useState<number | null>(null);
+  const [locations, setLocations] = useState<Location[]>([]);
+  const [newLocationName, setNewLocationName] = useState("");
+  const [editingLocationId, setEditingLocationId] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showAddForm, setShowAddForm] = useState(false);
-  const [newAsset, setNewAsset] = useState({
-    assetName: "",
-    serialNumber: "",
-    categoryID: 1,
-    status: "Available",
-    purchaseDate: ""
-  });
+const [newAsset, setNewAsset] = useState<{
+  assetName: string;
+  serialNumber: string;
+  categoryID: number;
+  status: string;
+  purchaseDate: string;
+  employeeID: number | null;
+  locationID: number | null;
+}>({
+  assetName: "",
+  serialNumber: "",
+  categoryID: 1,
+  status: "Available",
+  purchaseDate: "",
+  employeeID: null,
+  locationID: null,
+});
   const [editingAssetId, setEditingAssetId] = useState<number | null>(null);
 
   const filteredAssets = assets.filter((asset) => {
@@ -50,6 +73,31 @@ function App() {
     });
 }, []);
 
+useEffect(() => {
+  fetch("http://localhost:5178/api/Categories")
+    .then((response) => response.json())
+    .then((data) => setCategories(data))
+    .catch((error) => console.error(error));
+}, []);
+
+useEffect(() => {
+  fetch("http://localhost:5178/api/Employees")
+    .then((response) => response.json())
+    .then((data) => setEmployees(data))
+    .catch((error) =>
+      console.error("Error fetching employees:", error)
+    );
+}, []);
+
+useEffect(() => {
+  fetch("http://localhost:5178/api/Locations")
+    .then((response) => response.json())
+    .then((data) => setLocations(data))
+    .catch((error) =>
+      console.error("Error fetching locations:", error)
+    );
+}, []);
+
 const handleAddAsset = async () => {
   try {
     const response = await fetch("http://localhost:5178/api/Assets", {
@@ -75,7 +123,9 @@ const handleAddAsset = async () => {
       serialNumber: "",
       categoryID: 1,
       status: "Available",
-      purchaseDate: ""
+      purchaseDate: "",
+      employeeID: null,
+      locationID: null,
     });
   } catch (error) {
     console.error(error);
@@ -93,6 +143,8 @@ const handleEditAsset = (asset: Asset) => {
     purchaseDate: asset.purchaseDate
       ? asset.purchaseDate.substring(0, 10)
       : "",
+    employeeID: asset.employeeID,
+    locationID: asset.locationID
   });
 
   setShowAddForm(true);
@@ -142,7 +194,9 @@ const handleUpdateAsset = async () => {
       serialNumber: "",
       categoryID: 1,
       status: "Available",
-      purchaseDate: ""
+      purchaseDate: "",
+      employeeID: null,
+      locationID: null,
     });
   } catch (error) {
     console.error(error);
@@ -178,6 +232,327 @@ const handleDeleteAsset = async (id: number) => {
   }
 };
 
+const handleAddCategory = async () => {
+  if (!newCategoryName.trim()) {
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      "http://localhost:5178/api/Categories",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          categoryName: newCategoryName,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to add category");
+    }
+
+    const createdCategory = await response.json();
+
+    setCategories([...categories, createdCategory]);
+    setNewCategoryName("");
+  } catch (error) {
+    console.error("Error adding category:", error);
+  }
+};
+
+const handleDeleteCategory = async (categoryID: number) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5178/api/Categories/${categoryID}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to delete category");
+    }
+
+    setCategories(
+      categories.filter(
+        (category) => category.categoryID !== categoryID
+      )
+    );
+  } catch (error) {
+    console.error("Error deleting category:", error);
+  }
+};
+
+const handleEditCategory = (category: Category) => {
+  setEditingCategoryId(category.categoryID);
+  setNewCategoryName(category.categoryName);
+};
+
+const handleUpdateCategory = async () => {
+  if (editingCategoryId === null || !newCategoryName.trim()) {
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:5178/api/Categories/${editingCategoryId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          categoryID: editingCategoryId,
+          categoryName: newCategoryName,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to update category");
+    }
+
+    setCategories(
+      categories.map((category) =>
+        category.categoryID === editingCategoryId
+          ? {
+              ...category,
+              categoryName: newCategoryName,
+            }
+          : category
+      )
+    );
+
+    setNewCategoryName("");
+    setEditingCategoryId(null);
+  } catch (error) {
+    console.error("Error updating category:", error);
+  }
+};
+
+const handleAddEmployee = async () => {
+  if (!newEmployeeName.trim() || !newEmployeeDepartment.trim()) {
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      "http://localhost:5178/api/Employees",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: newEmployeeName,
+          department: newEmployeeDepartment,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to add employee");
+    }
+
+    const createdEmployee = await response.json();
+
+    setEmployees([...employees, createdEmployee]);
+
+    setNewEmployeeName("");
+    setNewEmployeeDepartment("");
+  } catch (error) {
+    console.error("Error adding employee:", error);
+  }
+};
+
+const handleEditEmployee = (employee: Employee) => {
+  setEditingEmployeeId(employee.employeeID);
+  setNewEmployeeName(employee.name);
+  setNewEmployeeDepartment(employee.department);
+};
+
+const handleUpdateEmployee = async () => {
+  if (
+    editingEmployeeId === null ||
+    !newEmployeeName.trim() ||
+    !newEmployeeDepartment.trim()
+  ) {
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:5178/api/Employees/${editingEmployeeId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          employeeID: editingEmployeeId,
+          name: newEmployeeName,
+          department: newEmployeeDepartment,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to update employee");
+    }
+
+    setEmployees(
+      employees.map((employee) =>
+        employee.employeeID === editingEmployeeId
+          ? {
+              ...employee,
+              name: newEmployeeName,
+              department: newEmployeeDepartment,
+            }
+          : employee
+      )
+    );
+
+    setNewEmployeeName("");
+    setNewEmployeeDepartment("");
+    setEditingEmployeeId(null);
+  } catch (error) {
+    console.error("Error updating employee:", error);
+  }
+};
+
+const handleDeleteEmployee = async (employeeID: number) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5178/api/Employees/${employeeID}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to delete employee");
+    }
+
+    setEmployees(
+      employees.filter(
+        (employee) => employee.employeeID !== employeeID
+      )
+    );
+  } catch (error) {
+    console.error("Error deleting employee:", error);
+  }
+};
+
+const handleAddLocation = async () => {
+  if (!newLocationName.trim()) {
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      "http://localhost:5178/api/Locations",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          locationName: newLocationName,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to add location");
+    }
+
+    const createdLocation = await response.json();
+
+    setLocations([...locations, createdLocation]);
+
+    setNewLocationName("");
+  } catch (error) {
+    console.error("Error adding location:", error);
+  }
+};
+
+const handleEditLocation = (location: Location) => {
+  setEditingLocationId(location.locationID);
+  setNewLocationName(location.locationName);
+};
+
+const handleUpdateLocation = async () => {
+  if (
+    editingLocationId === null ||
+    !newLocationName.trim()
+  ) {
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:5178/api/Locations/${editingLocationId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          locationID: editingLocationId,
+          locationName: newLocationName,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to update location");
+    }
+
+    setLocations(
+      locations.map((location) =>
+        location.locationID === editingLocationId
+          ? {
+              ...location,
+              locationName: newLocationName,
+            }
+          : location
+      )
+    );
+
+    setNewLocationName("");
+    setEditingLocationId(null);
+  } catch (error) {
+    console.error("Error updating location:", error);
+  }
+};
+
+const handleDeleteLocation = async (locationID: number) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5178/api/Locations/${locationID}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to delete location");
+    }
+
+    setLocations(
+      locations.filter(
+        (location) => location.locationID !== locationID
+      )
+    );
+  } catch (error) {
+    console.error("Error deleting location:", error);
+  }
+};
+
 const totalAssets = assets.length;
 
 const availableAssets = assets.filter(
@@ -201,6 +576,19 @@ const assignedAssets = assets.filter(
           <button onClick={() => setPage("Assets")}>
             Assets
           </button>
+
+          <button onClick={() => setPage("Categories")}>
+            Categories
+          </button>
+
+          <button onClick={() => setPage("Employees")}>
+            Employees
+          </button>
+
+          <button onClick={() => setPage("Locations")}>
+            Locations
+          </button>
+
         </nav>
       </aside>
 
@@ -261,6 +649,74 @@ const assignedAssets = assets.filter(
                     })
                   }
                 />
+
+                <label>Category</label>
+                <select
+                  value={newAsset.categoryID}
+                  onChange={(event) =>
+                  setNewAsset({
+                    ...newAsset,
+                    categoryID: Number(event.target.value),
+                   })
+                  }
+                >
+               {categories.map((category) => (
+               <option
+                key={category.categoryID}
+                 value={category.categoryID}
+                >
+                {category.categoryName}
+               </option>
+                 ))}
+                </select>
+
+              <select
+                value={newAsset.employeeID ?? ""}
+                onChange={(event) =>
+                    setNewAsset({
+                     ...newAsset,
+                    employeeID:
+                      event.target.value === ""
+                        ? null
+                        : Number(event.target.value),
+                })
+               }
+              >
+                <option value="">Unassigned</option>
+
+                {employees.map((employee) => (
+                  <option
+                     key={employee.employeeID}
+                     value={employee.employeeID}
+                  >
+                   {employee.name}
+                </option>
+                ))}
+              </select>
+
+              <select
+                value={newAsset.locationID ?? ""}
+                  onChange={(event) =>
+                    setNewAsset({
+                      ...newAsset,
+                      locationID:
+                      event.target.value === ""
+                      ? null
+                      : Number(event.target.value),
+                    })
+                  }
+              >
+                <option value="">No Location</option>
+
+                  {locations.map((location) => (
+                <option
+                  key={location.locationID}
+                  value={location.locationID}
+                >
+                  {location.locationName}
+                </option>
+                ))}
+              </select>
 
                 <select
                   value={newAsset.status}
@@ -329,7 +785,10 @@ const assignedAssets = assets.filter(
                   <th>ID</th>
                   <th>Asset Name</th>
                   <th>Serial Number</th>
+                  <th>Category</th>
                   <th>Status</th>
+                   <th>Assigned To</th>
+                   <th>Location</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -340,7 +799,28 @@ const assignedAssets = assets.filter(
                     <td>{asset.assetID}</td>
                     <td>{asset.assetName}</td>
                     <td>{asset.serialNumber}</td>
+                    <td>
+                      {categories.find(
+                        (category) => category.categoryID === asset.categoryID
+                      )?.categoryName}
+                    </td>
                     <td>{asset.status}</td>
+                    <td>
+                      {asset.employeeID === null
+                      ? "Unassigned"
+                      : employees.find(
+                        (employee) =>
+                          employee.employeeID === asset.employeeID
+                      )?.name || "Unknown"}
+                    </td>
+                    <td>
+                      {asset.locationID === null
+                        ? "No Location"
+                        : locations.find(
+                        (location) =>
+                          location.locationID === asset.locationID
+                          )?.locationName || "Unknown"}
+                    </td>
                    <td>
                     <button onClick={() => handleEditAsset(asset)}>
                        Edit
@@ -357,7 +837,192 @@ const assignedAssets = assets.filter(
             )}
           </div>
         )}
-        
+
+        {page === "Categories" && (
+          <div className="categories">
+            <div>
+             <input
+               type="text"
+               placeholder="Category Name"
+               value={newCategoryName}
+               onChange={(event) => setNewCategoryName(event.target.value)}
+             />
+           <button
+              onClick={
+                 editingCategoryId === null
+                  ? handleAddCategory
+                  : handleUpdateCategory
+               }
+            >
+             {editingCategoryId === null
+              ? "Add Category"
+              : "Update Category"}
+            </button>
+            </div>
+
+            <table>
+             <thead>
+               <tr>
+                 <th>ID</th>
+                 <th>Category Name</th>
+                 <th>Actions</th>
+               </tr>
+             </thead>
+
+              <tbody>
+               {categories.map((category) => (
+                <tr key={category.categoryID}>
+                  <td>{category.categoryID}</td>
+                  <td>{category.categoryName}</td>
+                  <td>
+                    <button
+                      onClick={() => handleEditCategory(category)}
+                    >
+                       Edit
+                    </button>
+
+                    <button
+                      onClick={() => handleDeleteCategory(category.categoryID)}
+                    >
+                       Delete
+                    </button>
+                 </td>
+               </tr>
+              ))}
+              </tbody>
+            </table>
+         </div>
+        )}
+
+        {page === "Employees" && (
+  <div className="employees">
+
+    <div className="employee-form">
+      <input
+        type="text"
+        placeholder="Employee Name"
+        value={newEmployeeName}
+        onChange={(event) =>
+          setNewEmployeeName(event.target.value)
+        }
+      />
+
+      <input
+        type="text"
+        placeholder="Department"
+        value={newEmployeeDepartment}
+        onChange={(event) =>
+          setNewEmployeeDepartment(event.target.value)
+        }
+      />
+
+      <button
+        onClick={
+          editingEmployeeId === null
+          ? handleAddEmployee
+          : handleUpdateEmployee
+        }
+      >
+        {editingEmployeeId === null
+        ? "Add Employee"
+        : "Update Employee"}
+     </button>
+  </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Department</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {employees.map((employee) => (
+          <tr key={employee.employeeID}>
+            <td>{employee.employeeID}</td>
+            <td>{employee.name}</td>
+            <td>{employee.department}</td>
+            <td>
+              <button
+                onClick={() => handleEditEmployee(employee)}
+              >
+                Edit
+              </button>
+
+              <button
+                  onClick={() => handleDeleteEmployee(employee.employeeID)}
+               >
+                Delete
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+)}
+
+{page === "Locations" && (
+  <div className="locations">
+    <div className="location-form">
+      <input
+        type="text"
+        placeholder="Location Name"
+        value={newLocationName}
+        onChange={(event) =>
+          setNewLocationName(event.target.value)
+        }
+      />
+
+     <button
+       onClick={
+        editingLocationId === null
+        ? handleAddLocation
+        : handleUpdateLocation
+        }
+      >
+        {editingLocationId === null
+          ? "Add Location"
+          : "Update Location"}
+      </button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Location Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {locations.map((location) => (
+          <tr key={location.locationID}>
+            <td>{location.locationID}</td>
+            <td>{location.locationName}</td>
+            <td>
+              <button
+                onClick={() => handleEditLocation(location)}
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => handleDeleteLocation(location.locationID)}
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+)}
+
       </main>
     </div>
   );
